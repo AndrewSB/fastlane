@@ -1,5 +1,37 @@
 # To include these private lanes, add the following line to your Fastfile:
-# import_from_git(url: 'https://github.com/AndrewSB/fastlane/blob/master/Fastfile')
+# import_from_git(url: 'git@github.com:AndrewSB/fastlane.git', path: 'Fastfile')
+
+#########  PUBLIC  #########
+
+lane :bootstrap do
+	sh ./carthage-bootstrap-if-needed.sh
+end
+
+# Expects a :project, :scheme, and optional :branch (defaults to master)
+lane :match_build_number_to_git do |options|
+	project = options[:project]
+	branch = options[:branch] || 'master'
+	build = get_build_number(xcodeproj: project)
+	numberOfCommits = `git rev-list --count #{branch}`
+
+	increment_build_number(build_number: numberOfCommits, xcodeproj: project)
+end
+
+######  BUILD & DEPLOY  #######
+
+# Expects :project & :scheme
+private_lane :build do |options|
+	project = options[:project]
+	scheme = options[:scheme]
+
+	gym(
+		scheme: scheme,
+		clean: true,
+		include_bitcode: true,
+		project: project,
+		xcargs: "ARCHIVE=YES" # Used to tell the Fabric run script to upload dSYM file
+	)
+end
 
 # Expects a :destination (TestFlight/App Store), :project & :scheme
 private_lane :itc do |options|
@@ -21,19 +53,7 @@ private_lane :itc do |options|
 	end
 end
 
-# Expects :project & :scheme
-private_lane :build do |options|
-	project = options[:project]
-	scheme = options[:scheme]
-
-	gym(
-		scheme: scheme,
-		clean: true,
-		include_bitcode: true,
-		project: project,
-		xcargs: "ARCHIVE=YES" # Used to tell the Fabric run script to upload dSYM file
-	)
-end
+########  UTIL  #########
 
 # Expects :project, :scheme, :destination & :channel
 # Also expects that your Fastfile has setup slack with an API token
