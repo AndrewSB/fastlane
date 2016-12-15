@@ -1,3 +1,6 @@
+# To include these private lanes, add the following line to your Fastfile:
+# import_from_git(url: 'https://github.com/AndrewSB/fastlane/blob/master/Fastfile')
+
 # Expects a :destination (TestFlight/App Store) & :scheme
 private_lane :itc do |options|
 	destination = options[:destination]
@@ -49,11 +52,11 @@ end
 
 # expects a :title, :message, optional :app_icon (defaults to fastlane icon) & optional :content_image (defaults to nothing)
 private_lane :push_notif do |options|
-  fastlane_icon_url = 'https://avatars0.githubusercontent.com/u/11098337?v=3&s=400'
+	fastlane_icon_url = 'https://avatars0.githubusercontent.com/u/11098337?v=3&s=400'
 
-	title 		    = options[:title]
-	message			  = options[:message]
-	app_icon			= options[:app_icon] || fastlane_icon_url
+	title		= options[:title]
+	message		= options[:message]
+	app_icon	= options[:app_icon] || fastlane_icon_url
 	content_image	= options[:content_image] || ''
 
 	notification(
