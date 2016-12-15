@@ -17,7 +17,7 @@ private_lane :itc do |options|
 	when "App Store"
 		deliver(force: true)
 	else
-		raise "critical error in Fastfile: Uploading an itc build was attempted without specifying `TestFlight` or the `App Store`. Instead, #{scheme} was specified 🤔"
+		raise "critical error in Fastfile: Uploading an itc build was attempted without specifying `TestFlight` or the `App Store`. Instead, #{destination} was specified 🤔"
 	end
 end
 
