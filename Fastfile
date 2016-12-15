@@ -4,7 +4,7 @@
 #########  PUBLIC  #########
 
 lane :bootstrap do
-	sh ./carthage-bootstrap-if-needed.sh
+	sh './carthage-bootstrap-if-needed.sh'
 end
 
 # Expects a :project, :scheme, and optional :branch (defaults to master)
@@ -68,7 +68,7 @@ private_lane :post_to_slack do |options|
 
 	slack(
 		message: "<!here|here>: New :ios: *#{version}* (#{build}) running `#{environment}` has been submitted to *#{destination}*  :rocket:",
-		channel: channel,
+		channel: channel
 	)
 end
 
@@ -85,6 +85,6 @@ private_lane :push_notif do |options|
 		title: title,
 		message: message,
 		content_image: content_image,
-		app_icon: app_icon,
+		app_icon: app_icon
 	)
 end
