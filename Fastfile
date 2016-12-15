@@ -1,14 +1,15 @@
 # To include these private lanes, add the following line to your Fastfile:
 # import_from_git(url: 'https://github.com/AndrewSB/fastlane/blob/master/Fastfile')
 
-# Expects a :destination (TestFlight/App Store) & :scheme
+# Expects a :destination (TestFlight/App Store), :project & :scheme
 private_lane :itc do |options|
 	destination = options[:destination]
+	project = options[:project]
 	scheme = options[:scheme]
 
 	match(type: 'appstore')
 
-	build(scheme: scheme)
+	build(project: project, scheme: scheme)
 
 	case destination
 	when "TestFlight"
@@ -34,19 +35,20 @@ private_lane :build do |options|
 	)
 end
 
-# Expects :project, :scheme & :destination
+# Expects :project, :scheme, :destination & :channel
 # Also expects that your Fastfile has setup slack with an API token
 private_lane :post_to_slack do |options|
-	project			= options[:project]
-	scheme      = options[:scheme]
-	version     = get_version_number(xcodeproj: project)
-	build       = get_build_number(xcodeproj: project)
-	environment = scheme.upcase
-	destination = options[:destination]
+	project		= options[:project]
+	scheme      	= options[:scheme]
+	version    	= get_version_number(xcodeproj: project)
+	build      	= get_build_number(xcodeproj: project)
+	environment 	= scheme.upcase
+	destination 	= options[:destination]
+	channel		= options[:channel]
 
 	slack(
 		message: "<!here|here>: New :ios: *#{version}* (#{build}) running `#{environment}` has been submitted to *#{destination}*  :rocket:",
-		channel: "ios",
+		channel: channel,
 	)
 end
 
