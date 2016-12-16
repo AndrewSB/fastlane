@@ -6,10 +6,8 @@
 lane :bootstrap do
 	download(url: 'https://raw.githubusercontent.com/AndrewSB/fastlane/master/carthage-bootstrap-if-needed.sh')
 	script = lane_context[SharedValues::DOWNLOAD_CONTENT]
-
-	sh 'cd ..'
-	sh script
-	sh 'cd fastlane'
+		
+	sh "cd .. \n#{script} \n cd fastlane"
 end
 
 # Expects a :project, :scheme, and optional :branch (defaults to master)
