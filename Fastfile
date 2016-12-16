@@ -4,7 +4,10 @@
 #########  PUBLIC  #########
 
 lane :bootstrap do
-	sh './carthage-bootstrap-if-needed.sh'
+	download(url: 'https://raw.githubusercontent.com/AndrewSB/fastlane/master/carthage-bootstrap-if-needed.sh')
+	
+	script = lane_context[SharedValues::DOWNLOAD_CONTENT]
+	sh script
 end
 
 # Expects a :project, :scheme, and optional :branch (defaults to master)
