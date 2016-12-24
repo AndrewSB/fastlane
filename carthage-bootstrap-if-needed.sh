@@ -11,6 +11,11 @@ BOOTSTRAP="carthage bootstrap --platform iOS --use-ssh"
 
 if [ -e "$CACHED_CARTFILE" ]; then
 	OUTDATED_DEPENDENCIES=$(cartfilediff "$CACHED_CARTFILE" Cartfile.resolved)
+	
+	if [ -z OUTDATED_DEPENDENCIES ]; then
+		echo "cartfilediff says all of your cached dependencies are upto date. Exiting now"
+		exit 0
+	fi
 
 	# This call to carthage potentially error out, in case
 	# you specify a dependency that existed in Cartfile.resolved,
