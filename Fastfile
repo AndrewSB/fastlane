@@ -1,4 +1,4 @@
-# To include these private lanes, add the following line to your Fastfile:
+# To include these lanes, add the following line to your Fastfile:
 # import_from_git(url: 'git@github.com:AndrewSB/fastlane.git', path: 'Fastfile')
 
 #########  PUBLIC  #########
@@ -42,8 +42,12 @@ private_lane :itc do |options|
 	project = options[:project]
 	scheme = options[:scheme]
 
-	match(type: 'appstore')
-
+	if is_ci 
+		match(type: 'appstore', readonly: 'true')
+	else
+		match(type: 'appstore')
+	end
+		
 	build(project: project, scheme: scheme)
 
 	case destination
