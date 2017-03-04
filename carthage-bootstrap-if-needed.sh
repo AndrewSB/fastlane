@@ -12,7 +12,9 @@ BOOTSTRAP="carthage bootstrap --platform iOS --use-ssh"
 if [ -e "$CACHED_CARTFILE" ]; then
 	OUTDATED_DEPENDENCIES=$(cartfilediff "$CACHED_CARTFILE" Cartfile.resolved)
 	
-	if [ -z OUTDATED_DEPENDENCIES ]; then
+	# This if check comes returns true if the string contains no characters other than spaces
+	# It was found at http://unix.stackexchange.com/a/147109
+	if [[ OUTDATED_DEPENDENCIES != *[!\ ]* ]]; then
 		echo "cartfilediff says all of your cached dependencies are upto date. Exiting now"
 		exit 0
 	fi
