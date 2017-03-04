@@ -16,7 +16,8 @@ lane :match_build_number_to_git do |options|
 	branch = options[:branch] || 'master'
 	build = get_build_number(xcodeproj: project)
 	numberOfCommits = `git rev-list --count #{branch}`
-
+	
+	puts "incrementing #{project}'s build number to #{numberOfCommits}"
 	increment_build_number(build_number: numberOfCommits, xcodeproj: project)
 end
 
